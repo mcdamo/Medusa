@@ -138,6 +138,9 @@ class GenericProvider(object):
         if not self.login():
             return False
 
+        if result.url.startswith('magnet'):
+            return self._save_magnet(result)
+
         urls, filename = self._make_url(result)
 
         for url in urls:
@@ -173,6 +176,17 @@ class GenericProvider(object):
                     {'result': result.name})
 
         return False
+
+    def _save_magnet(self, result):
+        # TODO: check if file exists
+        #logger.WARNING
+        result_name = sanitize_filename(result.name)
+        filename = join(app.TORRENT_DIR, result_name + '.magnet')
+        fo = open(filename, "wb")
+        fo.write(result.url.encode()) # encode() to bytes
+        fo.close()
+        log.info(u'Saved magnet to {0}'.format(filename))
+        return True
 
     def _make_url(self, result):
         """Return url if result is a Magnet link."""
