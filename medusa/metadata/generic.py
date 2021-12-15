@@ -795,14 +795,10 @@ class GenericMetadata(object):
                 else:
                     image_url = re.sub('posters', '_cache/posters', indexer_show_obj['poster'])
 
-            if not image_url and show_obj.indexer != INDEXER_TMDB and show_obj.externals.get('tmdb_id'):
-                # Try and get images from TMDB
-                image_url = self._retrieve_show_images_from_tmdb(show_obj, image_type)
-                if not image_url:
-                    log.info(
-                        'Could not find any {type} images on TMDB for {series}',
-                        {'type': image_type, 'series': show_obj.name}
-                    )
+            ## disabled - search by title is very falliable
+            #if not image_url:
+            #    # Try and get images from TMDB
+            #    image_url = self._retrieve_show_images_from_tmdb(show_obj, image_type)
 
         elif image_type == 'banner_thumb':
             if getattr(indexer_show_obj, 'banner', None):
@@ -814,14 +810,10 @@ class GenericMetadata(object):
             if getattr(indexer_show_obj, image_type, None):
                 image_url = indexer_show_obj[image_type]
 
-            if not image_url and show_obj.indexer != INDEXER_TMDB and show_obj.externals.get('tmdb_id'):
-                # Try and get images from TMDB
-                image_url = self._retrieve_show_images_from_tmdb(show_obj, image_type)
-                if not image_url:
-                    log.info(
-                        'Could not find any {type} images on TMDB for {series}',
-                        {'type': image_type, 'series': show_obj.name}
-                    )
+            ## disabled - search by title is very falliable
+            #if not image_url and show_obj.indexer != INDEXER_TMDB:
+            #    # Try and get images from TMDB
+            #    image_url = self._retrieve_show_images_from_tmdb(show_obj, image_type)
 
         if image_url:
             image_data = get_image(image_url, which)
