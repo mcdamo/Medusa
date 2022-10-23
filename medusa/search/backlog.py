@@ -111,7 +111,7 @@ class BacklogSearcher(object):
         # go through non air-by-date shows and see if they need any episodes
         for series_obj in show_list:
 
-            if series_obj.paused:
+            if series_obj.paused or series_obj.search_paused:
                 continue
 
             segments = series_obj.get_wanted_segments(from_date=from_date)

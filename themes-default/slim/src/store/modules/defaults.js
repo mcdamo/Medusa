@@ -15,6 +15,7 @@ const state = {
             location: null,
             locationValid: null,
             paused: null,
+            searchPaused: null,
             qualities: {
                 allowed: [],
                 preferred: []
