@@ -346,6 +346,7 @@ class QueueItemChangeIndexer(ShowQueueItem):
             'anime': self.old_show.anime,
             'scene': self.old_show.scene,
             'paused': self.old_show.paused,
+            'search_paused': self.old_show.search_paused,
             'blacklist': self.old_show.release_groups.blacklist if self.old_show.release_groups else None,
             'whitelist': self.old_show.release_groups.whitelist if self.old_show.release_groups else None,
             'default_status_after': self.old_show.default_ep_status,
@@ -554,6 +555,7 @@ class QueueItemAdd(ShowQueueItem):
         self.anime = options.get('anime')
         self.scene = options.get('scene')
         self.paused = options.get('paused')
+        self.search_paused = options.get('search_paused')
         self.blacklist = options.get('blacklist')
         self.whitelist = options.get('whitelist')
         self.default_status_after = options.get('default_status_after')

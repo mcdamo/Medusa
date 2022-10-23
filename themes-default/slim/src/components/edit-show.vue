@@ -69,7 +69,11 @@
                                 </config-toggle-slider>
 
                                 <config-toggle-slider v-model="show.config.paused" label="Paused" id="paused">
-                                    <span>pause this show (Medusa will not download episodes)</span>
+                                    <span>pause this show (Medusa will not download episodes or update seasons)</span>
+                                </config-toggle-slider>
+
+                                <config-toggle-slider v-model="show.config.searchPaused" label="Search Paused" id="search_paused">
+                                    <span>search_pause this show (Medusa will not download episodes)</span>
                                 </config-toggle-slider>
                             </fieldset>
                         </div>

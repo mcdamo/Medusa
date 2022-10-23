@@ -561,7 +561,7 @@ class BacklogQueueItem(generic_queue.QueueItem):
         generic_queue.QueueItem.run(self)
         self.started = True
 
-        if not self.show.paused:
+        if not self.show.paused and not self.show.search_paused:
             try:
                 log.info('Beginning backlog search for: {name}',
                          {'name': self.show.name})
@@ -871,7 +871,6 @@ class ProperSearchQueueItem(generic_queue.QueueItem):
         processed_propers_names = [proper.get('name') for proper in self.processed_propers if proper.get('name')]
 
         for cur_proper in sorted_propers:
-
             if not self.ignore_processed_propers and cur_proper.name in processed_propers_names:
                 log.debug(u'Proper already processed. Skipping: {proper_name}', {'proper_name': cur_proper.name})
                 continue
@@ -884,6 +883,10 @@ class ProperSearchQueueItem(generic_queue.QueueItem):
 
             if not cur_proper.parse_result.proper_tags:
                 log.info('Skipping non-proper: {name}', {'name': cur_proper.name})
+                continue
+
+            if not cur_proper.series.search_paused:
+                log.info('Skipping search_paused: {name}', {'name': cur_proper.name})
                 continue
 
             if not cur_proper.series.episodes.get(cur_proper.parse_result.season_number) or \

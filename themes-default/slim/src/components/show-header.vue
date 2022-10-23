@@ -255,6 +255,7 @@
                                             <tr v-if="subtitles.enabled"><td class="showLegend">Subtitles: </td><td><state-switch :theme="layout.themeName" :state="show.config.subtitlesEnabled" @click="toggleConfigOption('subtitlesEnabled');" /></td></tr>
                                             <tr><td class="showLegend">Season Folders: </td><td><state-switch :theme="layout.themeName" :state="show.config.seasonFolders || general.namingForceFolders" /></td></tr>
                                             <tr><td class="showLegend">Paused: </td><td><state-switch :theme="layout.themeName" :state="show.config.paused" @click="toggleConfigOption('paused')" /></td></tr>
+                                            <tr><td class="showLegend">Search Paused: </td><td><state-switch :theme="layout.themeName" :state="show.config.searchPaused" @click="toggleConfigOption('searchPaused')" /></td></tr>
                                             <tr><td class="showLegend">Air-by-Date: </td><td><state-switch :theme="layout.themeName" :state="show.config.airByDate" @click="toggleConfigOption('airByDate')" /></td></tr>
                                             <tr><td class="showLegend">Sports: </td><td><state-switch :theme="layout.themeName" :state="show.config.sports" @click="toggleConfigOption('sports')" /></td></tr>
                                             <tr><td class="showLegend">Anime: </td><td><state-switch :theme="layout.themeName" :state="show.config.anime" @click="toggleConfigOption('anime')" /></td></tr>

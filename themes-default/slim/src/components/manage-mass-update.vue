@@ -85,6 +85,11 @@
                                   @click="toggleConfigOption(props.row, 'paused')" />
                 </span>
 
+                <span v-else-if="props.column.label === 'Search Paused'" class="align-center">
+                    <state-switch :theme="layout.themeName" :state="props.row.config.searchPaused"
+                                  @click="toggleConfigOption(props.row, 'searchPaused')" />
+                </span>
+
                 <span v-else-if="props.column.label === 'Subtitle'" class="align-center">
                     <state-switch :theme="layout.themeName" :state="props.row.config.subtitlesEnabled"
                                   @click="toggleConfigOption(props.row, 'subtitlesEnabled')" />
@@ -258,6 +263,19 @@ export default {
                     ]
                 },
                 hidden: getCookie('Paused')
+            }, {
+                label: 'Search Paused',
+                field: 'config.searchPaused',
+                type: 'boolean',
+                filterOptions: {
+                    enabled: true,
+                    placeholder: '--no filter-- ',
+                    filterDropdownItems: [
+                        { value: true, text: 'yes' },
+                        { value: false, text: 'no' }
+                    ]
+                },
+                hidden: getCookie('SearchPaused')
             }, {
                 label: 'Subtitle',
                 field: 'config.subtitlesEnabled',

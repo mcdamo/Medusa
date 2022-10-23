@@ -46,7 +46,16 @@
                         <option :value="true">Yes</option>
                         <option :value="false">No</option>
                     </select><br>
-                    Pause these shows (Medusa will not download episodes).
+                    Pause these shows (Medusa will not download episodes or update seasons).
+                </config-template>
+
+                <config-template label="Search Paused">
+                    <select v-model="config.searchPaused" id="edit_search_paused" name="search_paused" class="form-control form-control-inline input-sm">
+                        <option :value="null">&lt; Keep &gt;</option>
+                        <option :value="true">Yes</option>
+                        <option :value="false">No</option>
+                    </select><br>
+                    Search Pause these shows (Medusa will not download episodes).
                 </config-template>
 
                 <config-template label="Default Episode Status">
@@ -178,6 +187,7 @@ export default {
                 qualities: { allowed: [], preferred: [] },
                 seasonFolders: null,
                 paused: null,
+                searchPaused: null,
                 defaultEpisodeStatus: null,
                 scene: null,
                 anime: null,
@@ -200,6 +210,7 @@ export default {
         this.config.qualities.preferred = allEqual(shows.map(show => combineQualities(show.config.qualities.allowed, show.config.qualities.preferred))) ? shows[0].config.qualities.preferred : [];
         this.config.seasonFolders = allEqual(shows.map(show => show.config.seasonFolders)) ? shows[0].config.seasonFolders : null;
         this.config.paused = allEqual(shows.map(show => show.config.paused)) ? shows[0].config.paused : null;
+        this.config.searchPaused = allEqual(shows.map(show => show.config.searchPaused)) ? shows[0].config.searchPaused : null;
         this.config.defaultEpisodeStatus = allEqual(shows.map(show => show.config.defaultEpisodeStatus)) ? shows[0].config.defaultEpisodeStatus : null;
         this.config.scene = allEqual(shows.map(show => show.config.scene)) ? shows[0].config.scene : null;
         this.config.anime = allEqual(shows.map(show => show.config.anime)) ? shows[0].config.anime : null;

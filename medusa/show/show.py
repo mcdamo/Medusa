@@ -212,6 +212,31 @@ class Show(object):
         return None, show
 
     @staticmethod
+    def search_pause(indexer_id, series_id, pause=None):
+        """
+        Change the no_search state of a show.
+
+        :param indexer_id: The unique id of the show to update
+        :param pause: ``True`` to pause the show, ``False`` to resume the show, ``None`` to toggle the pause state
+        :return: A tuple containing:
+         - an error message if the pause state could not be changed, ``None`` otherwise
+         - the show object that was updated, if it exists, ``None`` otherwise
+        """
+        error, show = Show._validate_indexer_id(indexer_id, series_id)
+
+        if error is not None:
+            return error, show
+
+        if pause is None:
+            show.search_paused = not show.search_paused
+        else:
+            show.search_paused = pause
+
+        show.save_to_db()
+
+        return None, show
+
+    @staticmethod
     def refresh(indexer_id, series_id, force=False):
         """
         Try to refresh a show.
