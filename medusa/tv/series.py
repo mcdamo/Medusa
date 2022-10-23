@@ -1533,6 +1533,7 @@ class Series(TV):
             self.airdate_offset = int(sql_results[0]['airdate_offset'] or 0)
             self.start_year = int(sql_results[0]['startyear'] or 0)
             self.paused = int(sql_results[0]['paused'] or 0)
+            self.search_paused = int(sql_results[0]['search_paused'] or 0)
             self.air_by_date = int(sql_results[0]['air_by_date'] or 0)
             self.anime = int(sql_results[0]['anime'] or 0)
             self.sports = int(sql_results[0]['sports'] or 0)
@@ -1796,6 +1797,7 @@ class Series(TV):
         self.anime = options['anime'] if options.get('anime') is not None else app.ANIME_DEFAULT
         self.scene = options['scene'] if options.get('scene') is not None else app.SCENE_DEFAULT
         self.paused = options['paused'] if options.get('paused') is not None else False
+        self.search_paused = options['search_paused'] if options.get('search_paused') is not None else False
         self.lang = options['lang'] if options.get('lang') is not None else app.INDEXER_DEFAULT_LANGUAGE
         self.show_lists = options['show_lists'] if options.get('show_lists') is not None else app.SHOWLISTS_DEFAULT
 
@@ -2287,6 +2289,7 @@ class Series(TV):
                           'status': self.status,
                           'flatten_folders': not self.season_folders,  # TODO: Remove negation after DB change
                           'paused': self.paused,
+                          'search_paused': self.search_paused,
                           'air_by_date': self.air_by_date,
                           'anime': self.anime,
                           'scene': self.scene,
@@ -2408,6 +2411,7 @@ class Series(TV):
         data['config']['qualities']['allowed'] = self.qualities_allowed
         data['config']['qualities']['preferred'] = self.qualities_preferred
         data['config']['paused'] = bool(self.paused)
+        data['config']['searchPaused'] = bool(self.search_paused)
         data['config']['airByDate'] = bool(self.air_by_date)
         data['config']['subtitlesEnabled'] = bool(self.subtitles)
         data['config']['dvdOrder'] = bool(self.dvd_order)
@@ -2831,6 +2835,10 @@ class Series(TV):
             log.debug('Skipping backlog for {0} because the show is paused', self.name)
             return wanted
 
+        if self.search_paused:
+            log.debug('Skipping backlog for {0} because the show is search_paused', self.name)
+            return wanted
+
         log.debug('Seeing if we need anything from {0}', self.name)
 
         from_date = from_date or datetime.date.fromordinal(1)
@@ -2877,6 +2885,16 @@ class Series(TV):
     def unpause(self):
         """Unpause the series."""
         self.paused = False
+        self.save_to_db()
+
+    def search_pause(self):
+        """Pause the series."""
+        self.search_paused = True
+        self.save_to_db()
+
+    def search_unpause(self):
+        """Unpause the series."""
+        self.search_paused = False
         self.save_to_db()
 
     def delete(self, remove_files):

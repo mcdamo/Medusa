@@ -35,7 +35,7 @@ class SeriesMassEdit(BaseRequestHandler):
     def post(self):
         """Perform a mass update action."""
         required_options = (
-            'paused', 'defaultEpisodeStatus', 'anime', 'sports', 'scene',
+            'paused', 'searchPaused', 'defaultEpisodeStatus', 'anime', 'sports', 'scene',
             'airByDate', 'seasonFolders', 'subtitles', 'qualities', 'language', 'languageKeep'
         )
         data = json_decode(self.request.body)
@@ -55,6 +55,7 @@ class SeriesMassEdit(BaseRequestHandler):
             return self._bad_request(f"Missing options: {', '.join(missing_options)}")
 
         paused = options.get('paused')
+        search_paused = options.get('searchPaused')
         default_ep_status = options.get('defaultEpisodeStatus')
         if isinstance(default_ep_status, str):
             default_ep_status = {v: k for k, v in statusStrings.items()}.get(default_ep_status)
@@ -90,6 +91,7 @@ class SeriesMassEdit(BaseRequestHandler):
                     new_show_dir = show_obj._location
 
             new_paused = show_obj.paused if paused is None else paused
+            new_search_paused = show_obj.search_paused if search_paused is None else search_paused
             new_default_ep_status = show_obj.default_ep_status if default_ep_status is None else default_ep_status
             new_anime = show_obj.anime if anime is None else anime
             new_sports = show_obj.sports if sports is None else sports
@@ -113,7 +115,7 @@ class SeriesMassEdit(BaseRequestHandler):
             errors += self.mass_edit_show(
                 show_obj, location=new_show_dir,
                 allowed_qualities=new_quality_allowed, preferred_qualities=new_quality_preferred,
-                season_folders=new_season_folders, paused=new_paused, air_by_date=new_air_by_date, sports=new_sports,
+                season_folders=new_season_folders, paused=new_paused, search_paused=new_search_paused, air_by_date=new_air_by_date, sports=new_sports,
                 dvd_order=new_dvd_order, subtitles=new_subtitles, anime=new_anime, scene=new_scene,
                 default_ep_status=new_default_ep_status, language=new_language
             )
@@ -122,7 +124,7 @@ class SeriesMassEdit(BaseRequestHandler):
 
     def mass_edit_show(
         self, show_obj, location=None, allowed_qualities=None, preferred_qualities=None,
-        season_folders=None, paused=None, air_by_date=None, sports=None, dvd_order=None, subtitles=None,
+        season_folders=None, paused=None, search_paused=None, air_by_date=None, sports=None, dvd_order=None, subtitles=None,
         anime=None, scene=None, default_ep_status=None, language=None
     ):
         """Variation of the original `editShow`, where `directCall` is always true."""
@@ -165,6 +167,7 @@ class SeriesMassEdit(BaseRequestHandler):
                     break
 
             show_obj.paused = paused
+            show_obj.search_paused = search_paused
             show_obj.scene = scene
             show_obj.anime = anime
             show_obj.sports = sports

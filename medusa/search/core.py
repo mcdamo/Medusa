@@ -510,6 +510,14 @@ def search_for_needed_episodes(scheduler_start_time, force=False):
                 cur_show.name,
             )
             continue
+
+        if cur_show.search_paused:
+            log.debug(
+                u'Not checking for needed episodes of {0} because the show is search_paused',
+                cur_show.name,
+            )
+            continue
+
         episodes.extend(wanted_episodes(cur_show, from_date))
 
     if not episodes and not force:
@@ -551,6 +559,10 @@ def search_for_needed_episodes(scheduler_start_time, force=False):
         for episode_no, results in iteritems(found_results):
             if results[0].series.paused:
                 log.debug(u'Skipping {0} because the show is paused.', results[0].series.name)
+                continue
+
+            if results[0].series.search_paused:
+                log.debug(u'Skipping {0} because the show is search_paused.', results[0].series.name)
                 continue
 
             # if all results were rejected move on to the next episode

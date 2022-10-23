@@ -108,6 +108,7 @@ class SeriesHandler(BaseRequestHandler):
                 'anime': data_options.get('anime'),
                 'scene': data_options.get('scene'),
                 'paused': data_options.get('paused'),
+                'search_paused': data_options.get('searchPaused'),
                 'blacklist': data_options['release'].get('blacklist', []) if data_options.get('release') else None,
                 'whitelist': data_options['release'].get('whitelist', []) if data_options.get('release') else None,
                 'default_status_after': None,
@@ -152,6 +153,7 @@ class SeriesHandler(BaseRequestHandler):
             'config.scene': BooleanField(series, 'scene'),
             'config.sports': BooleanField(series, 'sports'),
             'config.paused': BooleanField(series, 'paused'),
+            'config.searchPaused': BooleanField(series, 'search_paused'),
             'config.location': StringField(series, 'location'),
             'config.airByDate': BooleanField(series, 'air_by_date'),
             'config.subtitlesEnabled': BooleanField(series, 'subtitles'),
@@ -182,7 +184,7 @@ class SeriesHandler(BaseRequestHandler):
         series.save_to_db()
 
         if ignored:
-            log.warning('Series patch ignored {items!r}', {'items': ignored})
+            log.warning('Series patch !ignored {items!r}', {'items': ignored})
 
         # Push an update to any open Web UIs through the WebSocket
         msg = ws.Message('showUpdated', series.to_json(detailed=False))
