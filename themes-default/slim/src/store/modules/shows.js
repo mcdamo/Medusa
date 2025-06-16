@@ -602,6 +602,7 @@ const actions = {
                 scene: showConfig.scene,
                 sports: showConfig.sports,
                 paused: showConfig.paused,
+                searchPaused: showConfig.searchPaused,
                 location: showConfig.location,
                 airByDate: showConfig.airByDate,
                 subtitlesEnabled: showConfig.subtitlesEnabled,
